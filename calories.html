@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<!--
+    NutriBI - Calories page
+    The user searches for a food; js/calories.js calls the USDA FoodData Central API
+    and shows 4 food cards with calories, carbs, protein and fat per 100 g.
+    
+    Author: Hashini Liyanage
+    Created Date: 15/10/2026
+
+    Page structure uses HTML5 semantic elements (header, nav, main, section, article, footer).
+
+    Sample code referenc: 
+        https://www.sourcecodester.com/javascript/17715/food-recipes-nutrition-facts-using-html-css-and-javascript-source-code.html
+        https://www.geeksforgeeks.org/javascript/design-a-recipe-app-in-html-css-javascript/
+
+    Ref: MDN - Overview: Structuring content with HTML
+        https://developer.mozilla.org/en-US/docs/Learn_web_development/Core/Structuring_content/Structuring_documents
+    Ref: Responsive top navigation: https://www.w3schools.com/howto/howto_js_topnav_responsive.asp 
+-->
+
+<!-- helps screen readers pronounce the content -->
+<html lang="en">
+
+<head>
+    <!-- help letters and symbols display correctly. -->
+    <meta charset="utf-8" />
+    <!-- makes the page responsive by matching its width to the device screen 
+    Ref: https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/meta/name/viewport -->
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <!-- author of the webpage -->
+    <meta name="author" content="Hashini Liyanage" />
+    <!-- short description of the webpage for search engines and previews -->
+    <meta name="description"
+        content="NutriBI - search any food to see its calories, carbs, protein and fat per 100 g." />
+
+    <!-- title displayed in the browser tab -->
+    <title>NutriBI | Calories</title>
+
+    <!-- loads JavaScript files -->
+    <script src="js/main.js" defer></script>
+    <script src="js/calories.js" defer></script>
+
+    <!-- sets the browser tab icon 
+    Ref: https://www.w3schools.com/html/html_favicon.asp -->
+    <link rel="icon" href="images/icon.png" type="image/png">
+
+    <!-- loads CSS files -->
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+
+<body>
+
+    <!-- allows keyboard users to skip the navigation and jump directly to the main content 
+    Ref: https://medium.com/uxmm/straight-to-the-point-a-guide-to-skip-links-in-accessibility-205a2626ae6a -->
+    <a href="#main-content" class="skip-link">Skip to main content</a>
+
+    <header class="site-header">
+        <a href="index.html" class="logo">Nutri<span>BI</span></a>
+
+        <!-- main navigation area, aria-label provides an accessible name for screen readers 
+        Ref: https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/Reference/Attributes/aria-label -->
+        <nav aria-label="Main navigation">
+            <button type="button" class="menu-toggle" aria-controls="main-menu" aria-expanded="false" aria-label="Menu">
+                <!-- displays the hamburger menu, aria-hidden="true" prevents screen readers from announcing the decorative symbols 
+                Ref: https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/Reference/Attributes/aria-hidden -->
+                <span aria-hidden="true">☰</span>
+            </button>
+
+            <ul class="nav-list" id="main-menu">
+                <li><a href="index.html">Home</a></li>
+                <!-- aria-current="page" marks the page the user is on
+                Ref: https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/Reference/Attributes/aria-current -->
+                <li><a href="calories.html" aria-current="page">Calories</a></li>
+                <li><a href="recipes.html">Recipes</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main id="main-content">
+        <!-- aria-labelledby gives the section the heading's text as its name, so screen readers announce 'Calories'
+        Ref: https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/Reference/Attributes/aria-labelledby -->
+        <section class="intro" aria-labelledby="intro-title">
+            <h1 id="intro-title">Calories</h1>
+            <p>Type a food to see its calories and nutrients per 100 g.</p>
+
+            <form id="search-form">
+                <label for="food-search">Food name</label>
+                <input type="search" id="food-search" name="food" required minlength="2" placeholder="banana">
+                <button type="submit" class="button">Search</button>
+            </form>
+        </section>
+
+        <!-- food cards are added here by JavaScript after a search. aria-live="polite" makes screen readers announce the new content ("Searching…", results or error messages) when it changes.
+        Ref: https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/Guides/Live_regions -->
+        <section id="result" aria-live="polite"></section>
+
+    </main>
+
+    <footer class="site-footer">
+        <p>&copy; 2026 NutriBI</p>
+        <p>
+            Nutrition data from the
+            <a href="https://fdc.nal.usda.gov/api-guide">USDA FoodData Central API</a>
+            <span aria-hidden="true"> | </span>
+            Recipes from the
+            <a href="https://spoonacular.com/food-api">Spoonacular API</a>
+        </p>
+    </footer>
+</body>
+
+</html>
