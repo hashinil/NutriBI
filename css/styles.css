@@ -1,1 +1,660 @@
+/* =========================================================
+    NutriBI - main stylesheet
+    This file controls the visual appearance and responsive
+    layout of the NutriBI website. The stylesheet follows a
+    mobile-first approach - styles for small screens are written first 
+    and larger screen styles are added later using media queries.
+   
+    Author: Hashini Liyanage
+    Created Date: 14/10/2026
 
+    Contents
+        1. Colours and fonts (variables)
+        2. Box sizing
+        3. Page basics
+        4. Links
+        5. Skip link
+        6. Header and navigation
+        7. Main content and buttons
+        8. Home page cards
+        9. Forms
+        10. Calories page: food cards
+        11. Recipes page: recipe cards
+        12. Recipe popup (dialog)
+        13. Footer
+        14. Tablet (768px and wider)
+        15. Desktop (1024px and wider)
+        16. Reduced motion
+
+    Ref: https://developer.mozilla.org/en-US/docs/Learn_web_development/Core/CSS_layout/Responsive_Design
+    Ref: https://www.w3schools.com/css/
+
+    Ref: Form styling: https://www.w3schools.com/css/css_forms.asp
+   
+   ========================================================= */
+
+/* ---------- 1. Colours and fonts ---------- */
+
+/* styles defined within the :root block will apply to the entire document unless overridden by more specific rules. 
+Ref: https://www.geeksforgeeks.org/css/css-root-selector/
+    https://www.geeksforgeeks.org/css/what-are-css-custom-properties/*/
+:root {
+    /* dark teal - Main brand colour used for headings, logo and header area */
+    --color-main: #0f6e64;
+    /* dark teal - Primary colour used for buttons and interactive elements */
+    --color-action: #0f6e64;
+    /* darker teal - Darker shade shown when the user moves the mouse over a button */
+    --color-action-hover: #0b524b;
+    /* turquoise - focus rings, highlights */
+    --color-accent: #1aa392;
+    /* light green - "BI" in the logo, current page underline */
+    --color-light: #97e3c4;
+    /* mint white page background */
+    --color-bg: #f0faf7;
+    /* card background */
+    --color-surface: #ffffff;
+    /* soft card border */
+    --color-border: #d5ece6;
+    /* form field border */
+    --color-input-border: #9cc9c0;
+    /* body text */
+    --color-text: #1f2d2b;
+    /* secondary text */
+    --color-text-muted: #4a5e5a;
+    /* footer background */
+    --color-footer-bg: #e1f2ee;
+    /* invalid form field */
+    --color-error: #b42318;
+
+    --font-main: Arial, Helvetica, sans-serif;
+    /* rounded corner size for cards, buttons and fields */
+    --radius: 10px;
+}
+
+/* ---------- 2. Box sizing ---------- */
+
+/* Make width and height calculations easier by including
+   padding and borders inside the element's total size 
+Ref: https://www.w3schools.com/css/css3_box-sizing.asp */
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+}
+
+
+/* ---------- 3. Page basics ---------- */
+
+body {
+    /* remove the browser's default gap around the page */
+    margin: 0;
+    /* space between lines for easy reading */
+    line-height: 1.6;
+    font-family: var(--font-main);
+    color: var(--color-text);
+    background-color: var(--color-bg);
+}
+
+/* grouping selector: same style for all three heading levels */
+h1,
+h2,
+h3 {
+    margin-top: 1.5rem;
+    line-height: 1.2;
+    color: var(--color-main);
+}
+
+
+/* ---------- 4. Links ---------- */
+
+a {
+    color: var(--color-main);
+}
+
+/* pseudo-class: mouse is over the link 
+Ref: https://www.w3schools.com/css/css_pseudo_classes.asp */
+a:hover {
+    color: var(--color-accent);
+}
+
+/* pseudo-class: focused with the keyboard (Tab key) */
+a:focus-visible {
+    outline: 3px solid var(--color-accent);
+    /* small gap between the link and its outline */
+    outline-offset: 2px;
+}
+
+
+/* ---------- 5. Skip link ---------- */
+
+/* off-screen until a keyboard user Tabs to it.*/
+.skip-link {
+    position: absolute;
+    left: -9999px;
+}
+
+.skip-link:focus {
+    left: 1rem;
+    top: 1rem;
+    padding: 0.5rem 1rem;
+    background-color: var(--color-surface);
+}
+
+
+/* ---------- 6. Header and navigation ---------- */
+
+.site-header {
+    background-color: var(--color-main);
+    padding: 1rem;
+    /* reference point for the absolutely positioned menu button */
+    position: relative;
+}
+
+/* descendant selector: only links INSIDE the header are white */
+.site-header a {
+    color: #ffffff;
+    text-decoration: none;
+}
+
+.logo {
+    font-size: 1.5rem;
+    font-weight: bold;
+}
+
+/* the "BI" part of the logo */
+.logo span {
+    color: var(--color-light);
+}
+
+/* menu collapsed (height 0) and hidden from keyboard and screen readers */
+.nav-list {
+    /* remove bullet points and default list indent */
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    max-height: 0;
+    overflow: hidden;
+    visibility: hidden;
+    transition: max-height 0.3s ease, visibility 0.3s;
+}
+
+/* JavaScript adds "open": expand and show */
+.nav-list.open {
+    max-height: 20rem;
+    visibility: visible;
+}
+
+/* Bigger tap area for each menu link on phones */
+.nav-list a {
+    display: block;
+    padding: 0.5rem 0;
+}
+
+/* Attribute selector: underline the link for the current page */
+.nav-list a[aria-current="page"] {
+    text-decoration: underline;
+    text-decoration-color: var(--color-light);
+    text-decoration-thickness: 2px;
+    text-underline-offset: 6px;
+}
+
+/* Hamburger button, pinned to the top right of the header */
+.menu-toggle {
+    /* transparent, so the header colour shows through */
+    background: none;
+    border: none;
+    color: #ffffff;
+    padding: 0.25rem 0.5rem;
+    cursor: pointer;
+    font-size: 1.5rem;
+    position: absolute;
+    top: 0.75rem;
+    right: 1rem;
+}
+
+.menu-toggle:focus-visible {
+    outline: 3px solid var(--color-light);
+    outline-offset: 2px;
+}
+
+
+/* ---------- 7. Main content and buttons ---------- */
+
+/* Centred column, never wider than 1100px */
+main {
+    padding: 1rem;
+    max-width: 1100px;
+    margin: 0 auto;
+}
+
+/* A link or button styled as a solid button */
+.button {
+    /* lets an inline <a> take padding properly */
+    display: inline-block;
+    padding: 0.6rem 1.2rem;
+    background-color: var(--color-action);
+    color: #ffffff;
+    text-decoration: none;
+    border: 2px solid var(--color-action);
+    border-radius: var(--radius);
+    font-weight: bold;
+}
+
+.button:hover {
+    background-color: var(--color-action-hover);
+    border-color: var(--color-action-hover);
+    /* overrides the a:hover colour */
+    color: #ffffff;
+}
+
+.button-secondary:hover {
+    background-color: var(--color-action);
+    border-color: var(--color-action);
+}
+
+/* <button> elements don't inherit font or cursor like links do */
+button.button {
+    font-size: 1rem;
+    font-family: inherit;
+    cursor: pointer;
+}
+
+/* Visible keyboard focus on all buttons */
+button:focus-visible,
+.button:focus-visible {
+    outline: 3px solid var(--color-accent);
+    outline-offset: 2px;
+}
+
+/* Two buttons side by side on the home page, wrapping on small screens */
+.intro-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+}
+
+
+/* ---------- 8. Home page cards ---------- */
+
+.feature-card {
+    background-color: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius);
+    padding: 1rem;
+    /* space between stacked cards on phones */
+    margin-bottom: 1rem;
+}
+
+/* First element inside a card: no gap above it */
+.feature-card> :first-child {
+    margin-top: 0;
+}
+
+/* Last element inside a card: no gap below it */
+.feature-card> :last-child {
+    margin-bottom: 0;
+}
+
+/* Small line icon before each card heading */
+.card-icon {
+    width: 1.25rem;
+    height: 1.25rem;
+    /* outline style: no fill, coloured lines */
+    fill: none;
+    stroke: var(--color-main);
+    stroke-width: 2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    /* line the icon up with the heading text */
+    vertical-align: -3px;
+    margin-right: 0.35rem;
+}
+
+
+/* ---------- 9. Forms ---------- */
+
+/* Each label on its own line */
+label {
+    display: block;
+    font-weight: bold;
+    margin-bottom: 0.25rem;
+}
+
+/* Attribute selectors: text-type fields all look the same */
+input[type="search"],
+input[type="text"],
+input[type="number"],
+select {
+    /* full width on phones */
+    width: 100%;
+    padding: 0.6rem;
+    /* 16px or more stops iPhone auto-zooming into the field */
+    font-size: 1rem;
+    /* fields don't inherit the page font by default */
+    font-family: inherit;
+    border: 1px solid var(--color-input-border);
+    border-radius: var(--radius);
+    background-color: var(--color-surface);
+    margin-bottom: 1rem;
+}
+
+/* Clear focus ring when the user is in a field */
+input:focus-visible,
+select:focus-visible {
+    outline: 3px solid var(--color-accent);
+    outline-offset: 1px;
+    border-color: var(--color-main);
+}
+
+/* Red border only AFTER the user has entered something invalid */
+input:user-invalid {
+    border-color: var(--color-error);
+}
+
+/* Fieldset groups related radio buttons or checkboxes */
+fieldset {
+    border: 1px solid var(--color-input-border);
+    border-radius: var(--radius);
+    padding: 0.5rem 1rem 0.75rem;
+    margin: 0 0 1rem;
+}
+
+/* Legend = the fieldset's title */
+legend {
+    font-weight: bold;
+    padding: 0 0.25rem;
+}
+
+/* Radio/checkbox labels sit inline next to their box, not on their own line */
+fieldset label {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    margin-right: 1rem;
+    font-weight: normal;
+    cursor: pointer;
+}
+
+/* Attribute selectors: bigger, theme-coloured radios and checkboxes */
+input[type="radio"],
+input[type="checkbox"] {
+    width: 1.1rem;
+    height: 1.1rem;
+    accent-color: var(--color-main);
+}
+
+/* Pseudo-class :checked - bold text for the chosen option */
+fieldset label:has(input:checked) {
+    font-weight: bold;
+}
+
+
+/* ---------- 10. Calories page: food cards ---------- */
+
+.food-card {
+    background-color: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius);
+    padding: 1rem;
+    margin-bottom: 1rem;
+}
+
+.food-card h3 {
+    margin: 0 0 0.5rem;
+    font-size: 1.05rem;
+}
+
+.kcal {
+    margin: 0 0 0.5rem;
+}
+
+/* Big calorie number */
+.kcal strong {
+    font-size: 1.75rem;
+    color: var(--color-main);
+}
+
+/* Nutrient list: no bullets, small text */
+.nutrients {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    font-size: 0.9rem;
+}
+
+/* Thin line between nutrients, except above the first one */
+.nutrients li+li {
+    border-top: 1px solid var(--color-border);
+}
+
+/* ---------- 11. Recipes page: recipe cards ---------- */
+
+/* 1 column on phones */
+.recipe-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1rem;
+    /* fade in when JavaScript adds the cards */
+    animation: fade-in 0.4s ease;
+}
+
+/* Keyframes: describe the animation from start to end */
+@keyframes fade-in {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+/* Recipe card is a <button> (keyboard friendly) - reset its look */
+.recipe-card {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    padding: 0;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius);
+    background-color: var(--color-surface);
+    /* keeps the image corners rounded */
+    overflow: hidden;
+    text-align: left;
+    font: inherit;
+    color: var(--color-text);
+    cursor: pointer;
+}
+
+.recipe-card:hover {
+    border-color: var(--color-accent);
+}
+
+.recipe-card img {
+    width: 100%;
+    aspect-ratio: 3 / 2;
+    /* crop to fill, instead of stretching */
+    object-fit: cover;
+}
+
+/* Text area under the photo */
+.recipe-info {
+    display: block;
+    padding: 0.75rem;
+}
+
+.recipe-name {
+    display: block;
+    font-weight: bold;
+    color: var(--color-main);
+}
+
+.recipe-meta {
+    display: block;
+    font-size: 0.875rem;
+    color: var(--color-text-muted);
+}
+
+
+/* ---------- 12. Recipe popup (dialog) ---------- */
+
+#recipe-dialog {
+    /* 90% of screen width, but never more than 700px */
+    width: min(90vw, 700px);
+    /* never taller than 85% of the screen */
+    max-height: 85vh;
+    /* 0 so clicks on the backdrop can be detected in JavaScript */
+    padding: 0;
+    border: none;
+    border-radius: var(--radius);
+}
+
+/* Pseudo-element: the dark layer behind an open modal dialog */
+#recipe-dialog::backdrop {
+    background-color: rgb(0 0 0 / 0.5);
+}
+
+.dialog-content {
+    padding: 1rem 1.25rem;
+}
+
+/* Title on the left, close button on the right */
+.dialog-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem;
+}
+
+.dialog-header h2 {
+    margin: 0;
+}
+
+.dialog-close {
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    cursor: pointer;
+    color: var(--color-text);
+}
+
+.recipe-photo {
+    width: 100%;
+    max-height: 300px;
+    object-fit: cover;
+    border-radius: var(--radius);
+    margin: 1rem 0;
+}
+
+
+/* ---------- 13. Footer ---------- */
+
+.site-footer {
+    background-color: var(--color-footer-bg);
+    color: var(--color-text-muted);
+    padding: 1rem;
+    /* 14px if the browser default is 16px */
+    font-size: 0.875rem;
+    text-align: center;
+}
+
+/* Paragraphs inside the footer only: smaller gap between lines */
+.site-footer p {
+    margin: 0.25rem 0;
+}
+
+
+/* ---------- 14. Tablet (768px and wider) ---------- */
+/* ---------- Ref: https://css-tricks.com/snippets/css/media-queries-for-standard-devices/ */
+@media (min-width: 768px) {
+
+    /* Logo on the left, menu on the right */
+    .site-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    /* No hamburger - there is room for all links */
+    .menu-toggle {
+        display: none;
+    }
+
+    /* Always show the menu as a row (both selectors: see specificity) */
+    .nav-list,
+    .nav-list.open {
+        display: flex;
+        max-height: none;
+        visibility: visible;
+        gap: 1.5rem;
+    }
+
+    .nav-list a {
+        padding: 0;
+    }
+
+    /* Home: 2 feature cards side by side, heading across the top */
+    .features {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 1rem;
+    }
+
+    .features h2 {
+        grid-column: 1 / -1;
+    }
+
+    /* Grid gap now spaces the cards */
+    .feature-card,
+    .food-card {
+        margin-bottom: 0;
+    }
+
+    /* ID selector: don't stretch the search form across the page */
+    #search-form {
+        max-width: 500px;
+    }
+
+    /* Calories: 2 x 2 cards */
+    .food-grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 1rem;
+    }
+
+    /* Recipes: 2 columns */
+    .recipe-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+
+/* ---------- 15. Desktop (1024px and wider) ---------- */
+
+@media (min-width: 1024px) {
+
+    /* Calories: all 4 cards in one row */
+    .food-grid {
+        grid-template-columns: repeat(4, 1fr);
+    }
+
+    /* Recipes: all 4 cards in one row */
+    .recipe-grid {
+        grid-template-columns: repeat(4, 1fr);
+    }
+}
+
+
+/* ---------- 16. Reduced motion ---------- */
+
+/* Users who turned on "Reduce motion" in their OS get no animation */
+/* Ref: https://css-tricks.com/almanac/rules/m/media/prefers-reduced-motion/ */
+@media (prefers-reduced-motion: reduce) {
+    .nav-list {
+        transition: none;
+    }
+
+    .recipe-grid {
+        animation: none;
+    }
+}
